@@ -5,29 +5,31 @@ c = conn.cursor()
 
 c.execute("""
     CREATE TABLE IF NOT EXISTS Users (
+        username TEXT PRIMARY KEY,
         name TEXT,
-        password TEXT
+        password TEXT,
+        email TEXT
 );""")
 conn.commit()
 
 
-def addUser(name, password, confirmPassword):
+def addUser(name, username, password, confirmPassword, email):
     if password != confirmPassword:
         return "The passwords don't match."
 
     try:
         c.execute("""
-            SELECT name FROM Users WHERE name = ?;
-        """, (name,))
+            SELECT username FROM Users WHERE username = ?;
+        """, (username,))
         user = c.fetchone()
 
         if user:
-            return "User already exists."
+            return "Username already taken."
 
         c.execute("""
-            INSERT INTO Users (name, password)
-            VALUES (?, ?);
-        """, (name, password))
+            INSERT INTO Users (name, username, password, email)
+            VALUES (?, ?, ?, ?);
+        """, (name, username, password, email))
         conn.commit()
         return "Welcome " + name + "!"
 
@@ -35,31 +37,33 @@ def addUser(name, password, confirmPassword):
         return "Error adding user: " + name
 
 
-def removeUser(name, password, confirmPassword):
+def removeUser(username, password, confirmPassword):
     if password != confirmPassword:
         return "The passwords don't match."
 
     try:
         c.execute("""
-            SELECT * FROM Users WHERE name = ? AND password = ?
-        """, (name, password))
+            SELECT username, password FROM Users WHERE username = ? AND password = ?
+        """, (username, password))
         user = c.fetchone()
 
         if not user:
             return "User not found."
 
         c.execute("""
-            DELETE FROM Users
-            WHERE name = ? AND password = ?;
-        """, (name, password))
+            SELECT name FROM Users WHERE username = ?
+        """, (username,))
+        user = c.fetchone()[0]
+        c.execute("""
+            DELETE FROM Users WHERE username = ?
+        """, (username,))
         conn.commit()
-        return "Sorry to see you go " + name + "!"
+
+        return "Sorry to see you go " + user + "!"
 
     except:
-        return "Error removing user: " + name
+        return "Error removing user: " + username
 
-
-# addUser("Alice", "password123", "password123")
-# removeUser("Alce", "password123", "password123")
-# result = removeUser("Alice", "password123", "password123")
+# result = addUser("Alice", "alice", "password123", "password123", "alice")
+# result = removeUser("alice", "password123", "password123")
 # print(result)
