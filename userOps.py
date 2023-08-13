@@ -1,5 +1,7 @@
 import sqlite3
 
+import dataOps
+
 conn = sqlite3.connect('db/users.db')
 c = conn.cursor()
 
@@ -64,6 +66,24 @@ def removeUser(username, password, confirmPassword):
     except:
         return "Error removing user: " + username
 
+
+def loginPortal(username, password):
+    c.execute("""
+        SELECT username, password FROM Users WHERE username = ? AND password = ?
+        """, (username, password))
+    user = c.fetchone()
+
+    if not user:
+        return "Invalid credentials."
+    elif username == "Users":
+        return "Choose a different username"
+    return dataOps.userInfo(username)
+
 # result = addUser("Alice", "alice", "password123", "password123", "alice")
 # result = removeUser("alice", "password123", "password123")
+# result = loginPortal("alice", "password123")
+# dataOps.addSite("alice", "google", "passkey")
+# dataOps.addSite("alice", "facebook", "facepass")
+# dataOps.removeSite("alice", "google", "passkey")
+# result = dataOps.userInfo("alice")
 # print(result)

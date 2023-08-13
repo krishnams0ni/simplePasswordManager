@@ -17,7 +17,7 @@ class Encryption:
         l.reverse()
         return ''.join(l)
 
-import dbOps
+import userOps
 
 dbOps.removeUser()
 
