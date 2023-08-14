@@ -83,7 +83,7 @@ def loginPortal(username, password):
 # result = removeUser("alice", "password123", "password123")
 # result = loginPortal("alice", "password123")
 # dataOps.addSite("alice", "google", "passkey")
-# dataOps.addSite("alice", "facebook", "facepass")
+# dataOps.addSite("alice", "facebook", "facekey")
 # dataOps.removeSite("alice", "google", "passkey")
 # result = dataOps.userInfo("alice")
 # print(result)
