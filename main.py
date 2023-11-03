@@ -15,7 +15,10 @@ if i == 1:
 
     i = 0
     while i != 4:
-        i = int(input("1. View data\n2. Add Site\n3. Remove Site\n4. Quit\n"))
+        try:
+            i = int(input("1. View data\n2. Add Site\n3. Remove Site\n4. Quit\n"))
+        except:
+            print("Invalid input.")
         if i == 1:
             info = userInfo(username)
             for i in info:
@@ -39,7 +42,7 @@ elif i == 2:
 elif i == 3:
     username = input("Username: ")
     password = input("Password: ")
-    if "Delete Data" == input("Enter 'Delete Data' to confirm: "):
+    if "Yes" == input("Are you sure? ('Yes' to confirm) "):
         print(removeUser(username, password))
     else:
         print("Action cancelled.")

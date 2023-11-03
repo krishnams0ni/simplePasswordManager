@@ -1,7 +1,5 @@
 import sqlite3
 
-import dataOps
-
 conn = sqlite3.connect("db/users.db")
 c = conn.cursor()
 
