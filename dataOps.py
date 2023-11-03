@@ -1,4 +1,5 @@
 import sqlite3
+from encryption import *
 
 conn = sqlite3.connect("db/users.db")
 c = conn.cursor()
@@ -35,7 +36,7 @@ def addSite(username, site, password):
         INSERT INTO {username} (site, password)
         VALUES (?, ?);
         """,
-            (site, password),
+            (encrypt(site), encrypt(password)),
         )
         conn.commit()
         return "Success!"
@@ -48,7 +49,7 @@ def removeSite(username, site, password):
     try:
         c.execute(
             "DELETE FROM {} WHERE site = ? AND password = ?".format(username),
-            (site, password),
+            (encrypt(site), encrypt(password)),
         )
         conn.commit()
         if c.rowcount == 1:

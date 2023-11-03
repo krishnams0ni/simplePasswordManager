@@ -1,5 +1,6 @@
 from dataOps import *
 from userOps import *
+from encryption import *
 
 i = int(input("1. Login\n2. Register\n3. Remove user\n"))
 if i == 1:
@@ -18,7 +19,7 @@ if i == 1:
         if i == 1:
             info = userInfo(username)
             for i in info:
-                print(i[0], ":", i[1])
+                print(decrypt(i[0]), ":", decrypt(i[1]))
 
         elif i == 2:
             site = input("Site name: ")
@@ -38,8 +39,7 @@ elif i == 2:
 elif i == 3:
     username = input("Username: ")
     password = input("Password: ")
-    confirmPassword = input("Confirm Password: ")
-    if "Delete Data" == input("Enter 'Delete Data' to confirm."):
-        print(removeUser(username, password, confirmPassword))
+    if "Delete Data" == input("Enter 'Delete Data' to confirm: "):
+        print(removeUser(username, password))
     else:
         print("Action cancelled.")

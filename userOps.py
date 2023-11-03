@@ -47,10 +47,7 @@ def addUser(name, username, password, confirmPassword, email):
         return "Error adding user: " + name
 
 
-def removeUser(username, password, confirmPassword):
-    if password != confirmPassword:
-        return "The passwords don't match."
-
+def removeUser(username, password):
     try:
         c.execute(
             """
