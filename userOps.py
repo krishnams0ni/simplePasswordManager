@@ -2,16 +2,18 @@ import sqlite3
 
 import dataOps
 
-conn = sqlite3.connect('db/users.db')
+conn = sqlite3.connect("db/users.db")
 c = conn.cursor()
 
-c.execute("""
+c.execute(
+    """
     CREATE TABLE IF NOT EXISTS Users (
         username TEXT PRIMARY KEY,
         name TEXT,
         password TEXT,
         email TEXT
-);""")
+);"""
+)
 conn.commit()
 
 
@@ -20,18 +22,24 @@ def addUser(name, username, password, confirmPassword, email):
         return "The passwords don't match."
 
     try:
-        c.execute("""
+        c.execute(
+            """
             SELECT username FROM Users WHERE username = ?;
-        """, (username,))
+        """,
+            (username,),
+        )
         user = c.fetchone()
 
         if user:
             return "Username already taken."
 
-        c.execute("""
+        c.execute(
+            """
             INSERT INTO Users (name, username, password, email)
             VALUES (?, ?, ?, ?);
-        """, (name, username, password, email))
+        """,
+            (name, username, password, email),
+        )
         conn.commit()
         return "Welcome " + name + "!"
 
@@ -44,21 +52,30 @@ def removeUser(username, password, confirmPassword):
         return "The passwords don't match."
 
     try:
-        c.execute("""
+        c.execute(
+            """
             SELECT username, password FROM Users WHERE username = ? AND password = ?
-        """, (username, password))
+        """,
+            (username, password),
+        )
         user = c.fetchone()
 
         if not user:
             return "User not found."
 
-        c.execute("""
+        c.execute(
+            """
             SELECT name FROM Users WHERE username = ?
-        """, (username,))
+        """,
+            (username,),
+        )
         user = c.fetchone()[0]
-        c.execute("""
+        c.execute(
+            """
             DELETE FROM Users WHERE username = ?
-        """, (username,))
+        """,
+            (username,),
+        )
         conn.commit()
 
         return "Sorry to see you go " + user + "!"
@@ -68,16 +85,18 @@ def removeUser(username, password, confirmPassword):
 
 
 def loginPortal(username, password):
-    c.execute("""
+    c.execute(
+        """
         SELECT username, password FROM Users WHERE username = ? AND password = ?
-        """, (username, password))
+        """,
+        (username, password),
+    )
     user = c.fetchone()
 
     if not user:
-        return "Invalid credentials."
-    elif username == "Users":
-        return "Choose a different username"
-    return dataOps.userInfo(username)
+        return 0
+    return 1
+
 
 # result = addUser("Alice", "alice", "password123", "password123", "alice")
 # result = removeUser("alice", "password123", "password123")

@@ -6,7 +6,7 @@ class Encryption:
         while i < len(l) - 1:
             l[i], l[i + 1] = l[i + 1], l[i]
             i += 2
-        return ''.join(l)
+        return "".join(l)
 
     def decrypt(s):
         l = list(s)
@@ -15,7 +15,8 @@ class Encryption:
             l[i], l[i + 1] = l[i + 1], l[i]
             i += 2
         l.reverse()
-        return ''.join(l)
+        return "".join(l)
+
 
 import userOps
 

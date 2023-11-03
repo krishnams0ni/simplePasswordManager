@@ -1,20 +1,24 @@
 import sqlite3
 
-conn = sqlite3.connect('db/users.db')
+conn = sqlite3.connect("db/users.db")
 c = conn.cursor()
 
 
 def userInfo(username):
     try:
-        c.execute(f"""
+        c.execute(
+            f"""
             CREATE TABLE IF NOT EXISTS {username} (
                 site TEXT,
                 password TEXT
-        )""")
+        )"""
+        )
 
-        c.execute(f"""
+        c.execute(
+            f"""
             SELECT * FROM {username}
-        """)
+        """
+        )
 
         conn.commit()
         info = c.fetchall()
@@ -26,10 +30,13 @@ def userInfo(username):
 
 def addSite(username, site, password):
     try:
-        c.execute(f"""
+        c.execute(
+            f"""
         INSERT INTO {username} (site, password)
         VALUES (?, ?);
-        """, (site, password))
+        """,
+            (site, password),
+        )
         conn.commit()
         return "Success!"
 
@@ -39,11 +46,14 @@ def addSite(username, site, password):
 
 def removeSite(username, site, password):
     try:
-        c.execute(f"""
-            DELETE FROM {username} WHERE site = ? AND password = ?;
-        """, (site, password))
+        c.execute(
+            "DELETE FROM {} WHERE site = ? AND password = ?".format(username),
+            (site, password),
+        )
         conn.commit()
-        return "Success!"
-
-    except:
-        return "Error"
+        if c.rowcount == 1:
+            return "Success!"
+        else:
+            return "No matching record found."
+    except sqlite3.Error as e:
+        return "Error: " + str(e)
