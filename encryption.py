@@ -1,18 +1,17 @@
-def encrypt(s):
-    l = list(s)
-    l.reverse()
-    i = 0
-    while i < len(l) - 1:
-        l[i], l[i + 1] = l[i + 1], l[i]
-        i += 2
-    return "".join(l)
+key = "ajshgfjasb7y4h3oil3bno8"
 
 
-def decrypt(s):
-    l = list(s)
-    i = 0
-    while i < len(l) - 1:
-        l[i], l[i + 1] = l[i + 1], l[i]
-        i += 2
-    l.reverse()
-    return "".join(l)
+def encrypt(plaintext):
+    encrypted_data = []
+    for i in range(len(plaintext)):
+        num = ord(plaintext[i]) ^ ord(key[i % len(key)])
+        encrypted_data.append(chr(num))
+    return "".join(encrypted_data)
+
+
+def decrypt(ciphertext):
+    decrypted_data = []
+    for i in range(len(ciphertext)):
+        num = ord(ciphertext[i]) ^ ord(key[i % len(key)])
+        decrypted_data.append(chr(num))
+    return "".join(decrypted_data)
